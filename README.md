@@ -1,2 +1,3 @@
 # demo
-demo for study
+study git
+study c/s (TCP socket communication)
