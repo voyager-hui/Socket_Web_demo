@@ -1,3 +1,7 @@
 # demo  
-study git  
-study c/s (TCP socket communication)
+学习 git  
+学习 TCP socket
+
+## Python实现  
+
+## C实现  
