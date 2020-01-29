@@ -30,22 +30,27 @@ int main(int argc , char *argv[])
 	
 	puts("Connected\n");
 	
-	//Send some data
-	message = "Hi, it's client. Have fun together.";
-	if( send(socket_desc , message , strlen(message) , 0) < 0)
-	{
-		puts("Send failed");
-		return 1;
+	while(1){
+		//Send some data
+		message = "Hi, it's client. Have fun toget";
+		if( send(socket_desc , message , strlen(message) , 0) < 0)
+		{
+			puts("Send failed");
+			return 1;
+		}
+		puts("Sent:");
+		puts(message);
+		
+		//Receive a reply from the server
+		if( recv(socket_desc, server_reply , 2000 , 0) < 0)
+		{
+			puts("recv failed");
+		}
+		puts("Received:");
+		puts(server_reply);
+		
+		sleep(2);
 	}
-	puts("Data Send\n");
-	
-	//Receive a reply from the server
-	if( recv(socket_desc, server_reply , 2000 , 0) < 0)
-	{
-		puts("recv failed");
-	}
-	puts("Reply received\n");
-	puts(server_reply);
 	
 	//Close socket
 	close(socket_desc);

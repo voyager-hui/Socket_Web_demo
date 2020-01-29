@@ -6,9 +6,10 @@
 
 int main(int argc , char *argv[])
 {
-	int socket_desc , new_socket , c;
+	int socket_desc, new_socket, numbytes, c;
 	struct sockaddr_in server , client;
 	char *message;
+	char buff[BUFSIZ];
 	
 	//Create socket
 	socket_desc = socket(AF_INET , SOCK_STREAM , 0);
@@ -20,10 +21,10 @@ int main(int argc , char *argv[])
 	//Prepare the sockaddr_in structure
 	server.sin_family = AF_INET;
 	server.sin_addr.s_addr = INADDR_ANY;
-	server.sin_port = htons( 8888 );
+	server.sin_port = htons( 3333 );
 	
 	//Bind
-	if( bind(socket_desc,(struct sockaddr *)&amp;server , sizeof(server)) < 0)
+	if( bind(socket_desc,(struct sockaddr *)&server , sizeof(server)) < 0)
 	{
 		puts("bind failed");
 		return 1;
@@ -36,12 +37,18 @@ int main(int argc , char *argv[])
 	//Accept and incoming connection
 	puts("Waiting for incoming connections...");
 	c = sizeof(struct sockaddr_in);
-	while( (new_socket = accept(socket_desc, (struct sockaddr *)&amp;client, (socklen_t*)&amp;c)) )
+	new_socket = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c);
+	puts("Connection accepted");
+	while((numbytes = recv(new_socket, buff, BUFSIZ, 0)) > 0)
 	{
-		puts("Connection accepted");
-		
+		//Print message from client
+		buff[numbytes] = '\0';
+		puts("Received:");
+		printf("%s\n",buff);
 		//Reply to the client
 		message = "Hello Client , I have received your connection. But I have to go now, bye\n";
+		puts("Sent:");
+		puts(message);
 		write(new_socket , message , strlen(message));
 	}
 	
@@ -50,6 +57,9 @@ int main(int argc , char *argv[])
 		perror("accept failed");
 		return 1;
 	}
+		
+	//Close socket
+	close(socket_desc);
 	
 	return 0;
 }
