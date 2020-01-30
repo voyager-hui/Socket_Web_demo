@@ -46,7 +46,7 @@ int main(int argc , char *argv[])
 		puts("Received:");
 		printf("%s\n",buff);
 		//Reply to the client
-		message = "Hello Client , I have received your connection. But I have to go now, bye\n";
+		message = "Hello Client , I have received your data\n";
 		puts("Sent:");
 		puts(message);
 		write(new_socket , message , strlen(message));
