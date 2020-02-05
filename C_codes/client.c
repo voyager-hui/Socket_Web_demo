@@ -1,122 +1,142 @@
+/*****************************************************************************
+名称: 客户端Socket通信代码
+时间: 20200205
+作者: voyager
+功能: 将原始数据发送给服务器
+      接收服务器处理结果
+注意:
+*****************************************************************************/
+
 #include<stdio.h>
-#include<string.h>	//strlen
-#include<sys/socket.h>
-#include<arpa/inet.h>	//inet_addr
+#include<string.h>  //strlen
+#include<sys/socket.h>  //socket
+#include<arpa/inet.h>  //inet_addr
 #include<unistd.h>  //close
 
-//文件相关
-FILE *r_file, *w_file;
-char buf[50][100];
-int i=0, j=0;
 
-void read_data();
-void save_data();
+int read_data(FILE *read_file, char buf[100][1000]);  //读取文本
+void socket_send(int socket_desc, char buf[100][1000], int lines);  //发送原始数据
+int socket_receive(int socket_desc, char buf[100][1000]);  //接收处理结果
+void save_data(FILE *write_file, char buf[100][1000], int lines);  //保存文本
 
 
-int main(int argc, char *argv[])
-{
-	//Socket相关
+int main(){
 	int socket_desc;
 	struct sockaddr_in server;
-	char *message, server_reply[2000];
-	int k;
+	FILE *read_file, *write_file;
+	char buf[100][1000];  //注意传输数据少于100行1000列
+	int lines;
 
-	//读取原始数据
-	read_data();
+	puts("\nReading origin data......");
+	lines = read_data(read_file, buf);
 
-	//Create socket
+	//建立socket连接
 	socket_desc = socket(AF_INET, SOCK_STREAM, 0);
-	if (socket_desc == -1)
-	{
-		printf("Could not create socket");
+	if (socket_desc == -1){
+		puts("\nCould not create socket");
 	}
-	server.sin_addr.s_addr = inet_addr("49.232.163.31");
 	server.sin_family = AF_INET;
+	server.sin_addr.s_addr = inet_addr("49.232.163.31");
 	server.sin_port = htons(3333);
-
-	//Connect to remote server
-	if(connect(socket_desc, (struct sockaddr *)&server, sizeof(server)) < 0)
-	{
-		puts("connect error");
+	if(connect(socket_desc, (struct sockaddr *)&server, sizeof(server)) < 0){
+		puts("\nConnect error");
 		return 1;
 	}
-	puts("Connected\n");
-	
-	//Send data
-	printf("\nSending data to the server");
-	for(k=0; k<i; k++){
-		if(send(socket_desc, buf[k], strlen(buf[k]), 0) < 0)
-		{
-			puts("Send failed");
-			return 1;
-		}
-		puts("Sent:");
-		puts(buf[k]);
-		
-		if(recv(socket_desc, server_reply, 2000, 0) < 0)
-		{
-			puts("recv failed");
-		}
-		puts("Received:");
-		puts(server_reply);
-		
-		sleep(2);
-	}
-	
-	//Receive result
-	printf("\nReceiving data from the server");
-	while(1){
-		if(recv(socket_desc, msg, 2000, 0) < 0)
-		{
-			puts("recv failed");
-		}
-		puts("Received:");
-		puts(msg);
-		if(msg == 'q'){
-			break;
-		}
-		
-	}
-	
+	puts("\nConnected to the server!");
 
-	//Close socket
+	puts("Sending data to the server......");
+	socket_send(socket_desc, buf, lines);
+	puts("Receiving result from the server......");
+	lines = socket_receive(socket_desc, buf);
+
+	//关闭socket连接
 	close(socket_desc);
-
-	//保存结果
-	save_data();
+	
+	puts("\nSaving final result......");
+	save_data(write_file, buf, lines);
 
 	return 0;
 }
 
 
-void read_data()
-{
-	printf("Read......\n");
-	r_file =fopen("data.csv", "r");
-	if(!r_file){
-		printf("Cannot read\n");
-		return 1;
+int read_data(FILE *read_file, char buf[100][1000]){
+	int count = 0;
+	read_file = fopen("data.csv", "r");
+	if(!read_file){
+		puts("Cannot read");
 	}
-	while(fgets(buf[i], 100, r_file) != NULL){
-		printf("%s", buf[i]);
-		i++;
+	while(fgets(buf[count], 100, read_file) != NULL){
+		printf("Read: %s", buf[count]);
+		count++;
 	}
-	fclose(r_file);
+	fclose(read_file);
+	return count;
 }
 
 
-void save_data()
-{
-	printf("Writing......\n");
-	w_file =fopen("result.csv", "w+");
-	if(!w_file){
-		printf("Cannot write\n");
-		return 1;
+void socket_send(int socket_desc, char buf[100][1000], int lines){
+	int i;
+	char msg[100];
+	char complete_msg[] = "complete";
+	//发送原始数据
+	for(i=0; i<lines; i++){
+		if(send(socket_desc, buf[i], strlen(buf[i]), 0) < 0){
+			puts("Send failed!");
+		}
+		puts("\nSent:");
+		puts(buf[i]);
+		if(recv(socket_desc, msg, 1000, 0) < 0){
+			puts("Recv failed!");
+		}
+		puts("Received:");
+		puts(msg);
 	}
-	while(j < i){
-		printf("%s", buf[j]);
-		fprintf(w_file, buf[j]);
-		j++;
+	//发送结束标志
+	if(send(socket_desc, complete_msg, strlen(complete_msg), 0) < 0){
+		puts("Send failed!");
 	}
-	fclose(w_file);
+	else{
+		puts("\nSend complete!");
+	}
+}
+
+int socket_receive(int socket_desc, char buf[100][1000]){
+	int lines = 0;
+	char complete_msg[] = "complete";
+	char response_msg[] = "Client received server's data";
+	while(1){
+		//接收处理结果
+		if(recv(socket_desc, buf[lines], 1000, 0) < 0){
+			puts("recv failed");
+			continue;
+		}
+		puts("\nReceived:");
+		puts(buf[lines]);
+		if(strcmp(buf[lines], complete_msg) == 0){
+			break;
+		}
+		lines++;
+		//发送回复信息
+		if(send(socket_desc, response_msg, strlen(response_msg), 0) < 0){
+			puts("Send failed!");
+		}
+		puts("Sent:");
+		puts(response_msg);
+	}
+	return lines;
+}
+
+
+void save_data(FILE *write_file, char buf[100][1000], int lines){
+	int count = 0;
+	write_file = fopen("result.csv", "w+");
+	if(!write_file){
+		puts("Cannot write");
+	}
+	while(count < lines){
+		printf("Write: %s", buf[count]);
+		fprintf(write_file, buf[count]);
+		count++;
+	}
+	fclose(write_file);
 }
