@@ -3,14 +3,14 @@
 客户机采集数据并存储在data.csv文件中，限于客户机处理能力不够，
 将data.csv中的内容按行发送到服务器上，服务器接收并存储原始数据，
 再调用数据处理程序处理，处理结果存储下来，服务器再将结果按行发送给客户机，
-客户机接收结果并存储为result.csv。
+客户机接收结果并存储为result.csv。  
 本实现中data.csv中数据为25个地点的经度纬度数据。  
 服务器中数据处理程序为计算25个地点两两之间的距离。  
 result.csv中为结果。
 ## Python实现  
 服务器和客户端代码为Python程序。
 运行步骤：  
-  1. 将server.py和server_process.py放在服务器上，将client.py和data.csv放在客户机上。  
+  1. 将server.py和server_process.py放在服务器上，将client.py和data.npy放在客户机上。  
   2. 服务器上运行命令python server.py  
   3. 客户机上运行命令python client.py  
 *reference*:  
