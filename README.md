@@ -10,7 +10,7 @@ result.csv中为结果。
 ## Python实现  
 服务器和客户端代码为Python程序。
 运行步骤：  
-  1. 将server.py和server_process.py放在服务器上，将client.py和data.npy放在客户机上。  
+  1. 将server.py和server_process.py放在服务器上，将client.py和client_data.npy放在客户机上。  
   2. 服务器上运行命令python server.py  
   3. 客户机上运行命令python client.py  
 *reference*:  
