@@ -3,7 +3,7 @@
 时间: 20200205
 作者: voyager
 功能: 服务器接受客户机数据
-      通过system()调起处理程序(Python处理程序)
+      通过system()调起处理程序(Python处理程序或者C处理程序)
 	  将处理结果返回给客户机
 注意:
 *****************************************************************************/
@@ -59,9 +59,13 @@ int main(){
 	lines = socket_receive(new_socket, buf);
 	puts("\nSaving origin data......");
 	save_data(write_file, buf, lines);
-	//调用服务器处理程序处理数据
+	// //调用Python服务器处理程序处理数据
+	// puts("\n\n\nProcessing......\n\n\n");
+	// system("python server_process.py");
+	//调用C服务器处理程序处理数据
 	puts("\n\n\nProcessing......\n\n\n");
-	system("python server_process.py");
+	system("./server_process");
+	
 	puts("\nReading result data......");
 	lines = read_data(read_file, buf);
 	puts("Sending result to the client......");
