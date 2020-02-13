@@ -44,7 +44,9 @@ demo主要分为两部分：服务器程序推送新数据和Html网页定时刷
 ## 服务器程序推送新数据  
 由refresh.c实现功能：refresh.c先获取新数据，然后拼成shell命令，最后执行shell命令将新数据写入到网页所在位置的文件中。
 shell命令为  
-    echo "new_data" > /var/www/html/sensor/data.txt  
+```bash  
+echo "new_data" > /var/www/html/sensor/data.txt
+```  
 refresh.c调起shell执行此条命令，将新数据覆盖写入到web网页所在的data.txt文件中。  
 注意因为需要用字符串来拼成shell命令，所以读得的字符串需要先去掉换行符
 (linux换行符为\n， windows换行符为\r\n，Mac换行符为\r)，保证拼成的shell命令格式正确，然后是C语言的字符串格式化操作。 
@@ -69,12 +71,13 @@ refresh.c调起shell执行此条命令，将新数据覆盖写入到web网页所
 综合上面两个demo，客户机采集数据，通过socket与服务器通信，服务器将采集到的数据推送到Web网页上。  
 运行步骤：  
   1. 将sensor_data.html和style.css放在服务器html文件夹内，使网页可以访问。  
-  2. 将sensor_data.html放在服务器的某个文件夹内。  
+  2. 将server.c放在服务器上，将client.c和data.csv放在客户机上。  
   3. 服务器上运行命令gcc server.c -o server和sudo ./server
   4. 客户机上运行命令gcc client.c -o server和./client
   5. 访问sensor_data.html所在的网页，观察效果  
 
-效果图：  
+效果图  
+(pi黑框为树莓派客户端，JupyterLab黑框为服务器端，Web网页显示实时数据)  
 ![Windows](./assets/web_socket_demo.png)  
 ![pad](./assets/web_socket_demo_pad.png)   
 ![phone](./assets/web_socket_demo_phone.jpg) 
