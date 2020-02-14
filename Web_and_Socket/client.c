@@ -73,6 +73,8 @@ void socket_send(int socket_desc, char buf[100][1000], int lines){
 	char complete_msg[] = "complete";
 	//不断发送原始数据
 	for(i=0; ; i++, i%=lines){
+		//清空接收数组
+		memset(msg ,0, sizeof(char)*1000);
 		if(send(socket_desc, buf[i], strlen(buf[i]), 0) < 0){
 			puts("Send failed!");
 		}

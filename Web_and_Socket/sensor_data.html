@@ -1,35 +1,41 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <script>
-var int = self.setInterval("ajax()",5000);//每5秒查询一下
-function ajax(){
-	var xmlHttp = null;
-	var oldstr = document.getElementById('realtime').innerText;
-	if (window.XMLHttpRequest){
-		xmlHttp = new XMLHttpRequest();
-	}
-	else if(window.ActiveXObject){
-		xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
-	}
-	if(xmlHttp != null){
-		xmlHttp.open("get", "./sensor/data.txt", true);
-		xmlHttp.send();
-		xmlHttp.onreadystatechange = doResult; 
-	}
-	function doResult(){
-		if(xmlHttp.readyState == 4){
-			if (xmlHttp.status == 200){
-				var newstr = xmlHttp.responseText.replace(/\n|\r/g,"");//去掉换行符
-				if(oldstr != newstr){//判断是否有新数据
-					document.getElementById("realtime").innerHTML = newstr;
-					var node=document.createElement("ul");
-					var textnode=document.createTextNode(newstr);
-					node.appendChild(textnode);
-					document.getElementById("history").appendChild(node);
-				}
+var int = self.setInterval("data()",5000);//每5秒查询一下
+function data(){
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.open("get", "./sensor/data.txt", true);
+	xmlHttp.send();
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+			var oldstr = document.getElementById('realtime').innerText;
+			var newstr = xmlHttp.responseText.replace(/\n|\r/g,"");//去掉换行符
+			if(oldstr != newstr){//判断是否有新数据
+				document.getElementById("realtime").innerHTML = newstr;
+				var node=document.createElement("ul");
+				var textnode=document.createTextNode("Recv:"+newstr);
+				node.appendChild(textnode);
+				var list = document.getElementById("history");
+				list.insertBefore(node, list.childNodes[0]);
 			}
 		}
-	}
+	};
+}
+function command() {
+	var str = document.getElementById('input').value;
+	var command = "command.php?command="+str;
+	var request = new XMLHttpRequest();
+    request.open("GET", command);
+    request.onreadystatechange = function(){
+        if(this.readyState === 4 && this.status === 200) {
+			var node=document.createElement("ul");
+			var textnode=document.createTextNode(this.responseText);
+			node.appendChild(textnode);
+			var list = document.getElementById("history");
+			list.insertBefore(node, list.childNodes[0]);
+        }
+    };
+    request.send();
 }
 </script>
  <head>
@@ -54,7 +60,11 @@ function ajax(){
    <div class="content"> 
 	<p align="center" style="font-size: 2rem">实时数据：</p>
 	<p id="realtime" align="center" style="font-size: 4.5rem; word-break:break-all;"></p>
-	<p align="center" style="font-size: 2rem">历史数据：</p>
+	<p align="center" style="font-size: 2rem;">
+		<input id="input" type="text" style="width: 18rem;height: 2rem;"></input>
+		<button type="button" onclick="command()" style="height: 2rem;">发送command</button>
+	</p>
+	<p align="center" style="font-size: 2rem">历史记录：</p>
 	<p id="history" style="margin: 0 auto; width: 75%; height: 600px; overflow: scroll"></p>
 
    </div> 

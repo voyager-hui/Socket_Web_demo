@@ -1,7 +1,7 @@
 /* 4-2-1.8-1.4-1.2（基准） */
 body {
 	color: #000;
-	background: #fffff0;
+	background: #ffffff;
 	margin: 0;
 	padding: 0;
 	font-family: Calibri;
@@ -122,7 +122,7 @@ a:hover, a:active, a:focus {
 	max-width: 1300px;
 	min-width: 500px;
 	margin: 0 auto;
-	background-color: #fffff0;
+	background-color: #ffffff;
 	font-size: 1.2rem
 }
 
@@ -131,7 +131,7 @@ a:hover, a:active, a:focus {
 	background-color: transparent;
 	font-style: normal;
 	text-align: center;
-	background-color: #fffff0;
+	background-color: #ffffff;
 }
 
 /* 菜单 */
@@ -152,7 +152,7 @@ a:hover, a:active, a:focus {
 	padding: 10px 0;
 	float: left;
 	font-size: 1.2rem;
-	background-color: #fffff0;
+	background-color: #ffffff;
 }
 
 /* 图片、音频、视频、嵌入对象样式 */
@@ -173,7 +173,7 @@ a:hover, a:active, a:focus {
 	text-align:center;
 	clear:both;
 	font-size: 1.2rem;
-	background-color: #fffff0;
+	background-color: #ffffff;
 }
 
 /* 更多设置 */
