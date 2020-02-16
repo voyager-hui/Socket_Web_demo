@@ -70,7 +70,9 @@ refresh.c调起shell执行此条命令，将新数据覆盖写入到web网页所
 浏览器通过javascript/ajax读取data.txt的数据，并展示到Web界面中。  
 浏览器通过javascript/ajax获取用户的指令，将指令数据传给服务器php脚本，由php脚本将指令数据写入到command.txt中。  
 服务器程序再读取command.txt，获取到用户通过Web网页发出的指令。  
-服务器程序最后将用户指令通过Socket传递给客户机。
+服务器程序最后将用户指令通过Socket传递给客户机。  
+![flow](./assets/web_socket_flow.png)  
+
 运行步骤：  
   1. 将sensor_data.html、style.css和command.php放在服务器html文件夹内，  
      并在此建立777权限的./sensor/data.txt和./sensor/command.txt文件。  
