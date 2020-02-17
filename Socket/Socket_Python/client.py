@@ -12,7 +12,7 @@ import numpy as np
 def send(client):
     data = np.load("client_data.npy")
     for i in range(data.shape[0]):
-        msg = str(data[i, 0]) + ',' + str(data[i, 0])
+        msg = str(data[i, 0]) + ',' + str(data[i, 1])
         client.send(msg.encode('utf-8'))
         print('Client send:', msg)
         server_msg = client.recv(1024)
