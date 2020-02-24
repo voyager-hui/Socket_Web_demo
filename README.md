@@ -95,35 +95,35 @@ echo "new_data" > /var/www/html/sensor/data.txt
 
 **SQL基础命令**
 创建数据库  
-```bash  
+```sql  
 create database place
 ```  
 选择数据库  
-```bash  
+```sql  
 use place
 ```  
 创建数据表  
-```bash  
+```sql  
 create table data( no int unsigned auto_increment, name varchar(10) not null, lon float, lat float, primary key(no) )charset=utf8;
 ```  
 插入记录  
-```bash  
+```sql  
 insert into data (name, lon, lat) values ('pc', 87.585, -42.156);
 ```  
 取出所有记录  
-```bash  
+```sql  
 select * from data;
 ```  
 取出最后一条记录  
-```bash  
+```sql  
 select * from data order by no desc limit 1;
 ```  
 取出最后一条记录的no字段的值  
-```bash  
+```sql  
 select no from command order by no desc limit 1;
 ```  
 删除no在(2, 6)之间的记录  
-```bash  
+```sql  
 delete from data where no>2 and no<6
 ```  
 
