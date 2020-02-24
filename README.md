@@ -93,7 +93,7 @@ echo "new_data" > /var/www/html/sensor/data.txt
 2. https://blog.csdn.net/qq_32266237/article/details/52643876   
 3. https://blog.csdn.net/jiangzhanweiabc/article/details/79805294  
 
-**SQL基础命令**
+**SQL基础命令**  
 创建数据库  
 ```sql  
 create database place
@@ -138,7 +138,7 @@ delete from data where no>2 and no<6
 
 ## 2、C连接Mysql  
 makefile中指定mysqlclient库。必要时指定头文件目录。  
-```bash  
+```makefile  
 c_mysql:c_mysql.c
 	gcc c_mysql.c -o c_mysql -lmysqlclient
 ```  
