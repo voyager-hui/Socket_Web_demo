@@ -2,15 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <script>
 var int = self.setInterval("data()",5000);//每5秒查询一下
-function data(){
-	var xmlHttp = new XMLHttpRequest();
-	xmlHttp.open("get", "./sensor/data.txt", true);
-	xmlHttp.send();
-	xmlHttp.onreadystatechange = function(){
-		if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
-			var oldstr = document.getElementById('realtime').innerText;
-			var newstr = xmlHttp.responseText.replace(/\n|\r/g,"");//去掉换行符
-			if(oldstr != newstr){//判断是否有新数据
+function data() {
+	var request = new XMLHttpRequest();
+    request.open("GET", "data.php");
+	request.send();
+    request.onreadystatechange = function(){
+        if(this.readyState === 4 && this.status === 200) {
+			var oldstr = document.getElementById('realtime').innerText.replace(/\n|\r/g,"").trim();
+			var newstr = this.responseText.replace(/\n|\r/g,"").trim();
+			if(oldstr != newstr){//判断是否有新数据,注意换行符和空格的处理
 				document.getElementById("realtime").innerHTML = newstr;
 				var node=document.createElement("ul");
 				var textnode=document.createTextNode("Recv:"+newstr);
@@ -18,14 +18,15 @@ function data(){
 				var list = document.getElementById("history");
 				list.insertBefore(node, list.childNodes[0]);
 			}
-		}
-	};
+        }
+    };
 }
 function command() {
 	var str = document.getElementById('input').value;
 	var command = "command.php?command="+str;
 	var request = new XMLHttpRequest();
     request.open("GET", command);
+	request.send();
     request.onreadystatechange = function(){
         if(this.readyState === 4 && this.status === 200) {
 			var node=document.createElement("ul");
@@ -35,7 +36,6 @@ function command() {
 			list.insertBefore(node, list.childNodes[0]);
         }
     };
-    request.send();
 }
 </script>
  <head>

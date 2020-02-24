@@ -1,0 +1,185 @@
+/* 4-2-1.8-1.4-1.2（基准） */
+body {
+	color: #000;
+	background: #ffffff;
+	margin: 0;
+	padding: 0;
+	font-family: Calibri;
+	font-size: 1.2rem;
+	line-height: 1.4;
+}
+
+/* 列表 */
+ul, ol, dl {
+	font-size: 1.2rem;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+ul.nav {
+	display: flex;
+	flex: row;
+	flex-wrap: wrap;
+	list-style: none;
+	border-top: 1px solid #666;
+	border-bottom: 1px solid #666;
+}
+ul.nav li {
+	flex: auto;
+	text-align: center;
+	background-color: transparent;
+
+}
+ul.nav a, ul.nav a:visited {
+	padding: 15px 15px 15px 15px;
+	text-decoration: none;
+	background: #8090AB;
+	color: #2f4f4f;
+	background-color: transparent;
+}
+ul.nav a:hover, ul.nav a:active, ul.nav a:focus {
+	color: #2f4f4f;
+	background-color: #ae8c5a;
+	font-family: Calibri;
+}
+
+/* 标题 */
+h1 {
+	margin-top: 0;
+	padding:20px 15px 15px 20px;
+	font-size: 4rem;
+	text-align: center;
+	color: #000;
+}
+h2 {
+	margin-top: 0;
+	padding-right: 15px;
+	padding-left: 15px;
+	font-size: 2rem;
+	text-align: left;
+	color: #2f4f4f;
+}
+h3 {
+	margin-top: 0;
+	padding-right: 15px;
+	padding-left: 15px;
+	font-size: 1.8rem;
+	text-align: left;
+	color: #2f4f4f;
+}
+h4, h5, h6 {
+	margin-top: 0;
+	padding-right: 15px;
+	padding-left: 15px;
+	font-size: 1.4rem;
+	text-align: left;
+	color: #2f4f4f;
+}
+
+/* 段落 */
+p span{
+	margin-top: 0;
+	padding-right: 15px;
+	padding-left: 15px;
+	font-size: 1.2rem;
+}
+
+/* 预格式化（代码） */
+pre {
+	padding-left: 30px;
+	font-size: 1.4rem;
+	color: #abb2bf;
+	background-color: #282c34;
+}
+
+/* 链接与表格等样式 */
+a img {
+	border: none;
+	text-align: center;
+}
+a href {
+	color: #2f4f4f;
+}
+/* 链接样式设置 */
+a:link {
+
+	text-decoration: underline;
+	color: #2f4f4f;
+}
+a:visited {
+	color: #2f4f4f;
+	text-decoration: underline;
+}
+/* 此组选择器将为键盘导航者提供与鼠标使用者相同的悬停体验 */
+a:hover, a:active, a:focus {
+	text-decoration: none;
+	color: #2f4f4f;
+}
+
+/* 容器 */
+.container {
+	width: 100%;
+	max-width: 1300px;
+	min-width: 500px;
+	margin: 0 auto;
+	background-color: #ffffff;
+	font-size: 1.2rem
+}
+
+/* 标题 */
+.header {
+	background-color: transparent;
+	font-style: normal;
+	text-align: center;
+	background-color: #ffffff;
+}
+
+/* 菜单 */
+.menu {
+	float: center;
+	list-style: none;
+	background-color: #ead0b8;
+}
+.menu li{
+	font-weight: bold;
+	font-size: 2rem;
+	display: inline;
+}
+
+/* 主页内容 */
+.content {
+	width: 100%;
+	padding: 10px 0;
+	float: left;
+	font-size: 1.2rem;
+	background-color: #ffffff;
+}
+
+/* 图片、音频、视频、嵌入对象样式 */
+.content img, .content audio, .content video, .content embed{
+	width: 100%;
+	height:auto;
+}
+
+/* 无序列表(ul)，有序列表(ol)和定义列表(dl) */
+.content ul, .content ol, .content dl{ 
+	padding: 0 15px 15px 40px;
+}
+
+/* 脚注 */
+.footer {
+	padding: 0;
+	background: #FFF;
+	text-align:center;
+	clear:both;
+	font-size: 1.2rem;
+	background-color: #ffffff;
+}
+
+/* 更多设置 */
+#title2 {
+	font-size: 1.2rem;
+}
+table {
+	font-size: 1.2rem;
+}

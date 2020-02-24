@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<script>
+var int = self.setInterval("data()",5000);//每5秒查询一下
+function data(){
+	var xmlHttp = new XMLHttpRequest();
+	xmlHttp.open("get", "./sensor/data.txt", true);
+	xmlHttp.send();
+	xmlHttp.onreadystatechange = function(){
+		if(xmlHttp.readyState == 4 && xmlHttp.status == 200){
+			var oldstr = document.getElementById('realtime').innerText;
+			var newstr = xmlHttp.responseText.replace(/\n|\r/g,"");//去掉换行符
+			if(oldstr != newstr){//判断是否有新数据
+				document.getElementById("realtime").innerHTML = newstr;
+				var node=document.createElement("ul");
+				var textnode=document.createTextNode("Recv:"+newstr);
+				node.appendChild(textnode);
+				var list = document.getElementById("history");
+				list.insertBefore(node, list.childNodes[0]);
+			}
+		}
+	};
+}
+function command() {
+	var str = document.getElementById('input').value;
+	var command = "command.php?command="+str;
+	var request = new XMLHttpRequest();
+    request.open("GET", command);
+	request.send();
+    request.onreadystatechange = function(){
+        if(this.readyState === 4 && this.status === 200) {
+			var node=document.createElement("ul");
+			var textnode=document.createTextNode(this.responseText);
+			node.appendChild(textnode);
+			var list = document.getElementById("history");
+			list.insertBefore(node, list.childNodes[0]);
+        }
+    };
+}
+</script>
+ <head>
+  <meta name="viewport" content="width=720,initial-scale=0.5, minimum-scale=0.1, maximum-scale=1.0, user-scalable=yes"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <title>传感器数据</title> 
+  <link rel="stylesheet" type="text/css" href="style.css" /> 
+ </head> 
+ <body> 
+  <div class="container"> 
+   <div class="header"> 
+    <h1>传感器数据</h1> 
+   </div> 
+   <div class="menu"> 
+    <ul class="nav"> 
+     <li><a href="index.html">主页</a></li> 
+     <li><a href="page1.html">荷塘月色</a></li> 
+     <li><a href="rand.html">掷骰子</a></li> 
+     <li><a href="test.html">测试网页</a></li> 
+    </ul> 
+   </div> 
+   <div class="content"> 
+	<p align="center" style="font-size: 2rem">实时数据：</p>
+	<p id="realtime" align="center" style="font-size: 4.5rem; word-break:break-all;"></p>
+	<p align="center" style="font-size: 2rem;">
+		<input id="input" type="text" style="width: 18rem;height: 2rem;"></input>
+		<button type="button" onclick="command()" style="height: 2rem;">发送command</button>
+	</p>
+	<p align="center" style="font-size: 2rem">历史记录：</p>
+	<p id="history" style="margin: 0 auto; width: 75%; height: 600px; overflow: scroll"></p>
+
+   </div> 
+  </div>   
+ </body>
+</html>
